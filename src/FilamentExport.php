@@ -63,7 +63,7 @@ class FilamentExport implements FromCollection, WithHeadings, WithTitle, WithCus
 
     public function getAllColumns(): Collection
     {
-        $columns = collect($this->getTable()->getColumns());
+        $columns = collect($action->getTable()->getLivewire()->getCachedTableColumns())
 
         if ($this->getFilteredColumns()->isNotEmpty()) {
             $columns = $columns->filter(fn ($column) => $this->getFilteredColumns()->contains($column->getName()));
@@ -166,7 +166,7 @@ class FilamentExport implements FromCollection, WithHeadings, WithTitle, WithCus
     {
         $action->fileNamePrefix($action->getFileNamePrefix() ?: $action->getTable()->getHeading());
 
-        $columns = collect($action->getTable()->getColumns())
+        $columns = collect($action->getTable()->getLivewire()->getCachedTableColumns())
             ->mapWithKeys(fn ($column) => [$column->getName() => $column->getLabel()])
             ->toArray();
 
